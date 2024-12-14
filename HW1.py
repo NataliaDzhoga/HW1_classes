@@ -94,6 +94,17 @@ class Reviewer(Mentor):
     def __str__(self):
         return (f'Имя: {self.name}\nФамилия: {self.surname}\n')
 
+def grade_for_hw(students, course):
+    sum_grades = 0
+    for student in students:
+        sum_grades += float(*student.grades[course])
+    return sum_grades/len(students)
+
+def grade_for_lectures(lecturers, course):
+    sum_grades = 0
+    for lecturer in lecturers:
+        sum_grades += float(*lecturer.grades[course])
+    return sum_grades/len(lecturers)
 
 best_student = Student('Ruoy', 'Eman', 'your_gender')
 best_student.courses_in_progress += ['Python']
@@ -118,12 +129,15 @@ cool_reviewer.courses_attached += ['Python']
 cool_reviewer.courses_attached += ['Git']
 cool_reviewer.courses_attached += ['Введение в программирование']
 
+cool_reviewer2 = Reviewer('Kim', 'Won')
+cool_reviewer2.courses_attached += ['Git']
+
 cool_reviewer.rate_hw(best_student, 'Python', 10)
 cool_reviewer.rate_hw(best_student, 'Git', 9.7)
 cool_reviewer.rate_hw(best_student, 'Введение в программирование', 10)
 
 cool_reviewer.rate_hw(best_student2, 'Python', 10)
-cool_reviewer.rate_hw(best_student2, 'Git', 9.8)
+cool_reviewer2.rate_hw(best_student2, 'Git', 9.8)
 cool_reviewer.rate_hw(best_student2, 'Введение в программирование', 9.9)
 
 best_student.rate_lecture(cool_lecturer, 'Python', 10)
@@ -131,15 +145,18 @@ best_student.rate_lecture(cool_lecturer, 'Git', 9.8)
 best_student.rate_lecture(cool_lecturer, 'Введение в программирование', 9.9)
 best_student.rate_lecture(cool_lecturer2, 'Python', 8)
 
-# print(f'Студент {best_student.name} {best_student.surname} '
-      # f'имеет следующие оценки: {best_student.grades}')
-# print(f'Лектор {cool_lecturer.name} {cool_lecturer.surname} '
-      # f'имеет оценки по курсам: {cool_lecturer.grades}')
-# print(cool_reviewer)
-# print(cool_lecturer)
-# print(cool_lecturer2)
-# print(best_student)
-# print(best_student2)
+list_students = [best_student, best_student2]
+mean_grade_for_students = grade_for_hw(list_students, 'Git')
+
+list_lecturers = [cool_lecturer, cool_lecturer2]
+mean_grade_for_lecturers = grade_for_lectures(list_lecturers, 'Python')
+
+print(cool_reviewer)
+print(cool_reviewer2)
+print(cool_lecturer)
+print(cool_lecturer2)
+print(best_student)
+print(best_student2)
 
 if cool_lecturer == cool_lecturer2:
     print('Средние оценки двух лекторов одинаковые')
@@ -154,3 +171,9 @@ elif best_student < best_student2:
     print('Оценки второго студента выше')
 else:
     print('Оценки первого студента выше')
+
+print(f'Средняя оценка за домашние задания по всем студентам '
+      f'по курсу Git: {mean_grade_for_students}')
+print(f'Средняя оценка за лекции всех лекторов в рамках курса '
+      f'Python: {mean_grade_for_lecturers}')
+
